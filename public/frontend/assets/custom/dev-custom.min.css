@@ -1,0 +1,96 @@
+span.error{color:#d81717;font-size:10px}.glb-message-bx.error{text-align:center;color:red;background:#ff00001a;padding:9px}.glb-message-bx.success{text-align:center;background:#00800029;padding:9px}.ajax-loading{background:url(https://www.xiconeditor.com/image/icons/loading.gif) no-repeat right center!important}.select2-container{display:block}.select2-container--default .select2-selection--single,.select2-selection.select2-selection--multiple{border:1px solid #dfe3e7!important}.fc-event-danger{background:#e61610;border:1px solid #e61610}.fc-event-success{background:#036703;border:1px solid #036703}.fc-event-warning{background:#ffa834;border:1px solid #ffa834}.fc-event-primary{background:#0072bc;border:1px solid #0072bc}.fc-event-default{background:gray;border:1px solid gray}#form-loader{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;background:rgba(0,0,0,.75) url(../images/form-loading.gif) no-repeat center center;z-index:10000}.auth-logo-bx img{width:100px;padding-bottom:20px}.picker__input.form-control:disabled{background-color:#f2f4f4!important}
+
+.filter-main-box{
+
+	background: #dddddddd;
+
+    padding: 14px;
+
+    margin-bottom: 10px;
+
+    border-radius: 5px;
+
+    border: 1px solid #DDD;
+
+}
+
+#stepprogressbar { 
+     text-align: center;
+ } 
+ #stepprogressbar .active { 
+    color: #f3b41b
+ } 
+ #stepprogressbar li { 
+     list-style-type: none; 
+     font-size: 12px; 
+     width: 8%; 
+     float: left; 
+     position: relative; 
+ }
+
+ #stepprogressbar #step1:before { 
+    content: "1"
+ } 
+ #stepprogressbar #step2:before { 
+    content: "2"
+ } 
+ #stepprogressbar #step3:before { 
+    content: "3"
+ } 
+ #stepprogressbar #step4:before { 
+    content: "4"
+ }
+ #stepprogressbar #step5:before { 
+    content: "5"
+ }
+ #stepprogressbar #step6:before { 
+    content: "6"
+ }
+ #stepprogressbar #step7:before { 
+    content: "7"
+ }
+ #stepprogressbar #step8:before { 
+    content: "8"
+ } 
+ #stepprogressbar #step9:before { 
+    content: "9"
+ }
+ #stepprogressbar #step10:before { 
+    content: "10"
+ }
+ #stepprogressbar #step11:before { 
+    content: "11"
+ }
+ #stepprogressbar #step12:before { 
+    content: "12"
+ }
+ #stepprogressbar #step13:before { 
+    content: "13"
+ }
+ #stepprogressbar li:before { 
+    width: 30px;
+    height: 30px;
+    line-height: 26px;
+    display: block;
+    color: #ffffff;
+    background: #474242;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px;
+    text-align: center;
+    font-size: 14px;
+ } 
+ #stepprogressbar li:after { 
+     content: ''; 
+     width: 100%; 
+     height: 2px; 
+     background: lightgray; 
+     position: absolute; 
+     left: 0; 
+     top: 17px; 
+     z-index: -1
+ } 
+ #stepprogressbar li.active:before, 
+ #stepprogressbar li.active:after { 
+    background: #f3b41b
+ } 

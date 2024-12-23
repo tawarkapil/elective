@@ -1,0 +1,77 @@
+span.error{
+  color: #d81717;
+  font-size: 10px;
+ }
+
+ .glb-message-bx.error{
+    text-align: center;
+    color: red;
+    background: #ff00001a;
+    padding: 9px;
+ }
+
+  .glb-message-bx.success{
+    text-align: center;
+    background: #00800029;
+    padding: 9px;
+ }
+
+ .ajax-loading {
+    background: url(http://www.xiconeditor.com/image/icons/loading.gif) no-repeat right center !important;
+}
+
+.select2-container{
+    display: block;
+   
+}
+
+.select2-container--default .select2-selection--single,.select2-selection.select2-selection--multiple{
+     border: 1px solid #dfe3e7 !important;
+}
+
+
+.fc-event-danger{
+   background: #e61610;
+   border: 1px solid #e61610;
+   }
+   .fc-event-success{
+   background: #036703;
+   border: 1px solid #036703;
+   }
+   .fc-event-warning{
+   background: #ffa834;
+   border: 1px solid #ffa834;
+   }
+   .fc-event-primary{
+   background: #0072bc;
+   border: 1px solid #0072bc;
+   }
+
+
+   .fc-event-default{
+   background: #808080;
+   border: 1px solid #808080;
+   }
+
+
+   #form-loader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.75) url(../images/form-loading.gif) no-repeat center center;
+      z-index: 10000;
+    }
+
+
+   .auth-logo-bx img{
+        width: 100px;
+        padding-bottom: 20px;
+     }
+
+ .picker__input.form-control:disabled{
+    background-color: #f2f4f4 !important;
+ }

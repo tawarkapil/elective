@@ -1,0 +1,39 @@
+ALTER TABLE `customers` ADD `nationality` VARCHAR(255) NULL DEFAULT NULL AFTER `gender`;
+
+ALTER TABLE `customers` CHANGE `address` `address1` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+ALTER TABLE `customers` ADD `address2` TEXT NULL DEFAULT NULL AFTER `address1`;
+
+ALTER TABLE `customers` ADD `degree_title` VARCHAR(255) NULL DEFAULT NULL AFTER `university`;
+
+ALTER TABLE `customers` CHANGE `gender` `gender` TINYINT(4) NULL DEFAULT NULL;
+
+ALTER TABLE `mst_our_members` ADD `email` VARCHAR(255) NULL DEFAULT NULL AFTER `name`, ADD `destination` INT NULL DEFAULT NULL AFTER `email`;
+
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `ref_id` int(11) NOT NULL,
+  `heading` text DEFAULT NULL,
+  `notification` text DEFAULT NULL,
+  `view_url` text DEFAULT NULL,
+  `is_read` TINYINT DEFAULT 0,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+
+ALTER TABLE `applications` ADD `first_name` VARCHAR(255) NULL DEFAULT NULL AFTER `customer_id`, ADD `last_name` VARCHAR(255) NULL DEFAULT NULL AFTER `first_name`, ADD `email` VARCHAR(255) NULL DEFAULT NULL AFTER `last_name`, ADD `phone_number` VARCHAR(255) NULL DEFAULT NULL AFTER `email`, ADD `dob` DATETIME NULL DEFAULT NULL AFTER `phone_number`, ADD `gender` TINYINT NULL DEFAULT NULL AFTER `dob`, ADD `nationality` VARCHAR(255) NULL DEFAULT NULL AFTER `gender`, ADD `university` VARCHAR(255) NULL DEFAULT NULL AFTER `nationality`, ADD `degree_title` VARCHAR(255) NULL DEFAULT NULL AFTER `university`, ADD `year_of_study` VARCHAR(255) NULL DEFAULT NULL AFTER `degree_title`, ADD `graduation_date` VARCHAR(255) NULL DEFAULT NULL AFTER `year_of_study`, ADD `country` INT NULL DEFAULT NULL AFTER `graduation_date`, ADD `state` INT NULL DEFAULT NULL AFTER `country`, ADD `city` VARCHAR(255) NULL DEFAULT NULL AFTER `state`, ADD `zip_code` VARCHAR(255) NULL DEFAULT NULL AFTER `city`, ADD `address1` TEXT NULL DEFAULT NULL AFTER `zip_code` , ADD `address2` TEXT NULL DEFAULT NULL AFTER `address1`;
+
+
+ALTER TABLE `applications` ADD `step` TINYINT NOT NULL DEFAULT '0' AFTER `accept_terms_condition`;
