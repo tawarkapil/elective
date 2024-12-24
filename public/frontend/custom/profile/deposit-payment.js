@@ -125,6 +125,7 @@ $(function(){
     });
 
     function stripeResponseHandler(status, response) {
+        console.log('aaaa');
         var $form = $("#stripeSubmitFrm");
 
         if (response.error) {

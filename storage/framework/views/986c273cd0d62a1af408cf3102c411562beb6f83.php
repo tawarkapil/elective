@@ -1,12 +1,11 @@
-@extends('frontend.layouts.dashboard_app')
-@section('title')
-<title>Application - {{ ViewsHelper::getConfigKeyData('website_title') }}</title>
-@stop
-@section('content')
+<?php $__env->startSection('title'); ?>
+<title>Application - <?php echo e(ViewsHelper::getConfigKeyData('website_title')); ?></title>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
  <!-- Start main-content -->
   <div class="main-content dashboard">
   
-    <section class="inner-header divider layer-overlay overlay-dark"  data-bg-img="{{ url('public/frontend/assets/images/contact-us.jpg') }}">
+    <section class="inner-header divider layer-overlay overlay-dark"  data-bg-img="<?php echo e(url('public/frontend/assets/images/contact-us.jpg')); ?>">
       <div class="container pt-30 pb-30">
         <!-- Section Content -->
         <div class="section-content">
@@ -16,7 +15,7 @@
             </div>
             <div class="col-sm-4">
               <ol class="breadcrumb white mt-10 text-right xs-text-center"> 
-                <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                <li><a href="<?php echo e(url('dashboard')); ?>">Dashboard</a></li>
                 <li class="active">Application</li>
               </ol>
             </div>
@@ -27,7 +26,7 @@
     
 
     <!-- Section: Registration Form -->
-    @include('frontend.layouts.sidebar')
+    <?php echo $__env->make('frontend.layouts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <section class="divider">
       <div class="container">
         <div class="row">
@@ -37,9 +36,9 @@
                   <div class="row">
                 <div class="col-lg-12"> 
                    
-                    <h4 class="pagesub_title">Amount to be Paid: {{ ViewsHelper::displayAmount( $amount) }}</h4>
+                    <h4 class="pagesub_title">Amount to be Paid: <?php echo e(ViewsHelper::displayAmount( $amount)); ?></h4>
                     <h5 class="mb-3">Credit Card/debit card</h5>
-                   <form name="stripeSubmitFrm" id="stripeSubmitFrm" data-cc-on-file="false" data-stripe-publishable-key="{{ Config::get('stripe.api_key') }}">
+                   <form name="stripeSubmitFrm" id="stripeSubmitFrm" data-cc-on-file="false" data-stripe-publishable-key="<?php echo e(Config::get('stripe.api_key')); ?>">
                         <div class="row g-3">
                             <div class="col-xl-12 col-lg-12">
                                 <div class="form-group">
@@ -89,8 +88,8 @@
   <!-- end main-content -->
 
 
-@stop
-@section('styles')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('styles'); ?>
 <style type="text/css">
     #stripeSubmitFrm input{
         font-size: 18px;
@@ -98,8 +97,9 @@
     }
     
 </style>
-@stop
-@section('scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript" src="{{ url('public/frontend/custom/profile/deposit-payment.js') }}"></script>
-@stop
+<script type="text/javascript" src="<?php echo e(url('public/frontend/custom/profile/deposit-payment.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.layouts.dashboard_app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/elective/resources/views/frontend/profile/deposit-payment.blade.php ENDPATH**/ ?>

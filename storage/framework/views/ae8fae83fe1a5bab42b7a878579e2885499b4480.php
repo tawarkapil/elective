@@ -82,23 +82,20 @@
 
                                 <div class="timeline">
                                     <!-- timeline item -->
-                                    <?php for($i = 1; $i <= 3; $i++): ?>
+                                    <?php $__currentLoopData = $calls; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $call): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div>
                                             <i class="fas fa-phone bg-blue"></i>
                                             <div class="timeline-item">
-                                                <h3 class="timeline-header"><a href="#">Call <?php echo e($i); ?> </a>
+                                                <h3 class="timeline-header"><a href="#"><?php echo e($call->title); ?> </a>
                                                 </h3>
                                                 <div class="timeline-body">
-                                                    <b>Call Description : </b>Etsy doostang zoodles disqus groupon greplin
-                                                    oooj voxy zoodles,
-                                                    weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                                    quora plaxo ideeli hulu weebly balihoo...
+                                                    <b>Call Description : </b> <?php echo e($call->description); ?>
+
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- END timeline item -->
-                                    <?php endfor; ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                                 <!-- /.card-body -->
                             </div>

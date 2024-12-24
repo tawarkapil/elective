@@ -207,6 +207,62 @@ class Application extends Base {
         return $json;
     }
 
+    function stripepaymentRegistrationFee($input){
+        $rules['stripeToken'] = 'required';
+        $messages = array();
+        $newnames = array();
+        $v = \Validator::make($input, $rules);
+        $v->setAttributeNames($newnames);
+        if ($v->passes()) {
+            DB::beginTransaction();
+            try{
+                
+                $customer = Auth::guard('customer')->user();
+                $data = Application::where('customer_id', $customer->customer_id)->first();
+
+                if(!$data || ($data && $data->accept_terms_condition != 'Yes')){
+                    $json['status'] = 2;
+                    $json['message'] = $e->getMessage();
+                }
+
+                $total_payable_amt = 400;
+                $striperesponse = false;
+
+                Stripe\Stripe::setApiKey(Config::get('stripe.secret_key'));
+                $striperesponse = Stripe\Charge::create([
+                    "amount" => $total_payable_amt * 100,
+                    "currency" => "usd",
+                    "source" => $input['stripeToken'],
+                ]);
+                
+                $obj = new Transaction();
+                $obj->payment_token = Str::random(105);
+                $obj->customer_id = $data->customer_id;
+                $obj->application_id = $data->id;
+                $obj->transaction_id = strtoupper($striperesponse->id);
+                $obj->payment_type = 'Stripe';
+                $obj->payment_amount = $total_payable_amt;
+                $obj->payment_date = date('Y-m-d H:i:s');
+                $obj->status = 1;
+                $obj->save();
+                $obj->invoice_number = 'INV-'.$obj->id;
+                $obj->save();
+
+                DB::commit();
+                $json['status'] = 1;
+                $json['redirect_url'] = url('payment-success/'.$obj->payment_token);
+            } catch (\Exception $e) {
+                DB::rollback();
+                $json['status'] = 2;
+                $json['message'] = $e->getMessage();
+            }
+        }else{
+            $json['status'] = 0;
+            $json['message'] = $v->messages();
+        }
+        return $json;
+    }
+
     function parse_size($size) {
       $unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
       $size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.

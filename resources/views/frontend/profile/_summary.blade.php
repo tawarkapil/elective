@@ -53,7 +53,7 @@
 </div>
 @if (isset($stepName) && $stepName  == 'summary')
     <div class="form-group">
-        <button type="button" class="btn btn-block bg-gradient-success btn-lg">Pay Now</button>
+        <a href="{{ url('application/deposit-payment') }}" class="btn btn-block bg-gradient-success btn-lg">Pay Now</a>
         <img src="{{ url('public/common/card-img.png') }}" style="width: 100%;margin-top: 25px;">
     </div>
 @endif

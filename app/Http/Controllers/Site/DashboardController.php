@@ -8,6 +8,7 @@ use App\Models\StudentDocument;
 use App\Models\SystemDocument;
 use App\Models\OurMember;
 use App\Models\Application;
+use App\Models\ProgramCall;
 use App\Models\Tour;
 use App\Models\Addon;
 use Auth;
@@ -41,13 +42,14 @@ class DashboardController extends Controller
         $array['ArrivalDate']     = ($data) ? $data->trip_start_date : null;
         $array['duration']        = ($data) ? $data->duration : null;
         $array['destination']     = ($data) ? $data->getdestination->id : 0;
+        $calls  = ProgramCall::where('application',$data->id)->get();
         // print_r($array);die;
         $summaryConf = \ViewsHelper::getApplicationSummary($array);
         // tour and addons get
         $tour = Tour::where('destination',$data->destination)->get();
         $addon = Addon:: where('program',$data->program)->get();
         //view files retun with data
-        return view('frontend.dashboard.myelective', [ 'summaryConf'=>  $summaryConf, 'tour'=>$tour,'addon'=>$addon,'applicatinData'=>$data,'input' => $input, 'ourmembers' => $ourmembers]);
+        return view('frontend.dashboard.myelective', ['calls'=>$calls, 'summaryConf'=>  $summaryConf, 'tour'=>$tour,'addon'=>$addon,'applicatinData'=>$data,'input' => $input, 'ourmembers' => $ourmembers]);
     }
 
     function myAddOnEvents(Request $request){

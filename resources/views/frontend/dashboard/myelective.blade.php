@@ -83,23 +83,19 @@
 
                                 <div class="timeline">
                                     <!-- timeline item -->
-                                    @for ($i = 1; $i <= 3; $i++)
+                                    @foreach($calls  as $call)
                                         <div>
                                             <i class="fas fa-phone bg-blue"></i>
                                             <div class="timeline-item">
-                                                <h3 class="timeline-header"><a href="#">Call {{ $i }} </a>
+                                                <h3 class="timeline-header"><a href="#">{{ $call->title }} </a>
                                                 </h3>
                                                 <div class="timeline-body">
-                                                    <b>Call Description : </b>Etsy doostang zoodles disqus groupon greplin
-                                                    oooj voxy zoodles,
-                                                    weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                                    quora plaxo ideeli hulu weebly balihoo...
+                                                    <b>Call Description : </b> {{ $call->description }}
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- END timeline item -->
-                                    @endfor
+                                    @endforeach
                                 </div>
                                 <!-- /.card-body -->
                             </div>
