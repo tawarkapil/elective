@@ -5,6 +5,7 @@ dist/
 .editorconfig
 package-lock.json
 public/assets/uploads/*.*
+storage
 
 
 *.class

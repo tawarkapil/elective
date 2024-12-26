@@ -131,6 +131,14 @@ class CustomerTrip extends Base{
                     }
                 }
                 $obj->save();
+                
+                $tripCustObj = TripCustomers::where('trip_id', $obj->id)->where('customer_id', $obj->customer_id)->firstOrNew();
+                $tripCustObj->type = 1;
+                $tripCustObj->trip_id = $obj->id;
+                $tripCustObj->customer_id = $obj->customer_id;
+                $tripCustObj->status = 1;
+                $tripCustObj->save();
+
                 $json['message'] = 'Saved successfully';
                 $json['status'] = 1;
                 DB::commit();
