@@ -11,6 +11,7 @@ use App\Models\Application;
 use App\Models\ProgramCall;
 use App\Models\Tour;
 use App\Models\Addon;
+use App\Models\CustomerTrip;
 use Auth;
 
 class DashboardController extends Controller
@@ -43,13 +44,15 @@ class DashboardController extends Controller
         $array['duration']        = ($data) ? $data->duration : null;
         $array['destination']     = ($data) ? $data->getdestination->id : 0;
         $calls  = ProgramCall::where('application',$data->id)->get();
+        
         // print_r($array);die;
         $summaryConf = \ViewsHelper::getApplicationSummary($array);
+        $customerTrip = CustomerTrip::where('application_id', $data->id)->first();
         // tour and addons get
         $tour = Tour::where('destination',$data->destination)->get();
         $addon = Addon:: where('program',$data->program)->get();
         //view files retun with data
-        return view('frontend.dashboard.myelective', ['calls'=>$calls, 'summaryConf'=>  $summaryConf, 'tour'=>$tour,'addon'=>$addon,'applicatinData'=>$data,'input' => $input, 'ourmembers' => $ourmembers]);
+        return view('frontend.dashboard.myelective', ['customerTrip'=>$customerTrip,'calls'=>$calls, 'summaryConf'=>  $summaryConf, 'tour'=>$tour,'addon'=>$addon,'applicatinData'=>$data,'input' => $input, 'ourmembers' => $ourmembers]);
     }
 
     function myAddOnEvents(Request $request){

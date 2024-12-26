@@ -13,7 +13,7 @@
         <div class="section-content text-center">
           <div class="row"> 
             <div class="col-md-6 col-md-offset-3 text-center">
-              <h2 class="font-36 page_title">Expolore Group Trip</h2>
+              <h2 class="font-36 page_title">Expolore Group Trip </h2>
               <ol class="breadcrumb text-center mt-10 white">
                 <li><a href="<?php echo e(url('/')); ?>">Home</a></li>
                 <li class="active">Expolore Group Trip</li>

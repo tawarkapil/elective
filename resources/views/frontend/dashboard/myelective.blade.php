@@ -62,8 +62,14 @@
                                                 data-target="#tourModel">Add Tours</button>
                                         </span>
                                     </li>
-                                    <li class="check_list mb-2"><span><i class="fa fa-check-circle"></i></span> <span>Group
-                                            Trip : (Group Id and link to group)</span></li>
+                                    <li class="check_list mb-2">
+                                        <span>
+                                            <i class="fa fa-check-circle"></i>
+                                        </span> 
+                                        <span>Group Trip : 
+                                            <a href="{{ isset($customerTrip->id) ?$customerTrip->getDetailsPageUrl():url('trips/info/no/0') }}">Create Group</a>
+                                        </span>
+                                    </li>
                                 </ul>
                             </div>
                             <!-- /.card-body -->
@@ -83,7 +89,7 @@
 
                                 <div class="timeline">
                                     <!-- timeline item -->
-                                    @foreach($calls  as $call)
+                                    @foreach ($calls as $call)
                                         <div>
                                             <i class="fas fa-phone bg-blue"></i>
                                             <div class="timeline-item">

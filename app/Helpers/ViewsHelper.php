@@ -74,7 +74,7 @@ class ViewsHelper {
 
     public static function getTripCoverImage($obj, $size = "200_200") {
         if($obj && $obj->cover_image){
-             return url('public/uploads/programs/'.$obj->cover_image);
+             return url('public/uploads/cust_trips/'.$obj->cover_image);
         }
         return url('public/common/no-image.png');
     }

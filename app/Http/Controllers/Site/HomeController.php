@@ -17,6 +17,7 @@ use App\Models\Tour;
 use App\Models\Addon;
 use App\Models\MstTag;
 use App\Models\Comment;
+use App\Models\Application;
 use Auth;
 use Config;
 
@@ -119,13 +120,23 @@ class HomeController extends Controller
     function tripInfo(Request $request, $title, $id){
         $id = base64_decode($id);
         $data = CustomerTrip::where('id', $id)->where('status', 1)->first();
-        if (!$data) {
-            return abort(404);
-        }
-        
+        // if (!$data) {
+        //     return abort(404);
+        // }
+        $application = Application::where('customer_id', \Auth::guard('customer')->user()->customer_id)->with(['getprogram','getdestination'])->first();
         $programs = Program::where('status', 1)->orderBy('title', 'ASC')->get();
         $similar_trips = CustomerTrip::where('status', 1)->orderBy('created_at', 'DESC')->take(20)->get();
-        return view('frontend.pages.trips-details', ['request' => $request, 'data' => $data, 'programs' => $programs, 'similar_trips' => $similar_trips]);
+        return view('frontend.pages.trips-details', ['application'=>$application,'request' => $request, 'data' => $data, 'programs' => $programs, 'similar_trips' => $similar_trips]);
+    }
+
+    public function addnewCustomerTrip(Request $request)
+    {
+        
+        $obj = new CustomerTrip();
+        $input = $request->all();
+        // $input['id'] = base64_decode($input['id']);
+        $data = $obj->addNew($input);
+        return json_encode($data);
     }
 
     function destinations(Request $request) {

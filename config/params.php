@@ -20,6 +20,12 @@ return [
         'mimes' => array('image/jpeg', 'image/jpg', 'image/png'),
     ),
 
+    'cust_trips_image' => array(
+        'base_path' => 'public/uploads/cust_trips/',
+        'path' => 'public/uploads/cust_trips/',
+        'mimes' => array('image/jpeg', 'image/jpg', 'image/png'),
+    ),
+
     'tour_image' => array(
         'base_path' => 'public/uploads/tours/',
         'path' => 'public/uploads/tours/',

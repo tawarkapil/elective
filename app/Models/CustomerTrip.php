@@ -8,6 +8,7 @@ use DB;
 use Validator;
 use Illuminate\Support\Str;
 use Auth;
+use Config;
 
 class CustomerTrip extends Base{
 
@@ -65,5 +66,86 @@ class CustomerTrip extends Base{
         }
         return $desc;
     }
+
+    function uploadImage($file, $id = false) {
+        $imgConf = Config::get("params.cust_trips_image");
+        $allowed = $imgConf['mimes'];
+        $mimeType = $file->getMimeType();
+        if (!in_array($mimeType, $allowed)) {
+            return array("status" => 0, 'error' => 'Image should be a .jpg or a .png file . Recommended file size should be maximum 2.5MB');
+        }
+        $path = base_path($imgConf['base_path']);
+        if (!is_dir($path)) {
+            umask(0);
+            mkdir($path, 0777, true);
+            chmod($path, 0777); //incase mkdir fails
+        }
+        $extension = $file->getClientOriginalExtension(); // getting image extension
+        $fileName = time() . "_" . rand(11111, 99999) . "_" . time() . '.' . $extension; // renameing image
+        $file->move($path, $fileName); // uploading file to given path
+        if ($file->isValid()) {
+            return array("status" => 0, 'error' => $file->getError());
+        }
+        return array('status' => 1, 'file_name' => $fileName, 'path' => $path);
+    }
+
+    function addNew($input) {
+        //$input['attachments'] = explode(',', $input['attachments']);
+        if(isset($input['id'])){
+            $data = $obj = $this->getByKey($input['id']);
+        }
+        
+        $rules = array(
+            'title' => 'required|not_allow_symbol|min:3|max:250', 
+            'description' => 'required|not_allow_symbol|max:10000', 
+        );
+        $rules['image'] = 'required|mimes:jpeg,jpg,png';
+        // if($data){
+        //     $rules['image'] = 'nullable|mimes:jpeg,jpg,png';
+        // }
+
+        $newnames = array();
+        $messages = array();
+        $v = \Validator::make($input, $rules, $messages);
+        $v->setAttributeNames($newnames);
+        if ($v->passes()) {
+            DB::beginTransaction();
+            try{
+                if (empty($data)) {
+                    $obj = new CustomerTrip();
+                }
+                $obj->title = ucfirst($input['title']);
+                $obj->customer_id = Auth::guard('customer')->user()->customer_id;
+                $obj->description = $input['description'];
+                $obj->application_id = $input['application_id'];
+                
+                if (!empty($input['image'])) {
+                    $uploaded = $this->uploadImage($input['image']);
+                    if ($uploaded['status'] == 0) {
+                        $json['error'] = 2;
+                        $json['error_mess'] = $uploaded['error'];
+                        return $json;
+                    }
+                    if ($uploaded['status'] == 1) {
+                        $obj->cover_image = $uploaded['file_name'];
+                    }
+                }
+                $obj->save();
+                $json['message'] = 'Saved successfully';
+                $json['status'] = 1;
+                DB::commit();
+            }catch(\Exception $e){
+                DB::rollback();
+                $json['status'] = 2;
+                $json['message'] = $e->getMessage();
+            }
+        } else {
+            $json['status'] = 0;
+            $json['message'] = $v->messages();
+        }
+        return $json;
+    }
+
+
 
 }

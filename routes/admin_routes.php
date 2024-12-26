@@ -5,11 +5,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() use ($rou
     $router->get('login','AuthController@login')->name('login');
     $router->post('doLogin','AuthController@doLogin');
     $router->get('logout', 'AuthController@logout');
-   $router->get('forgot-password','AuthController@forgetPassword');
+    $router->get('forgot-password','AuthController@forgetPassword');
     $router->post('submitForgetPassword','AuthController@submitforgetPassword');
     $router->get('resetpassword/{token}','AuthController@resetPassword');
     $router->post('submitResetPassword','AuthController@submitresetPassword');
-   
     $router->get('change-password','ProfileController@changePassword')->middleware('auth');
     $router->post('change-password','ProfileController@submitchangePassword')->middleware('auth');
 });
