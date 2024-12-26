@@ -1,11 +1,12 @@
+storage/
 vendor/
 node_modules/
 dist/
 .env
 .editorconfig
 package-lock.json
-public/assets/uploads/*.*
-storage
+public/uploads
+
 
 
 *.class

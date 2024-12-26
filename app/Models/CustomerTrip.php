@@ -141,6 +141,7 @@ class CustomerTrip extends Base{
 
                 $json['message'] = 'Saved successfully';
                 $json['status'] = 1;
+                $json['url'] = $obj->getDetailsPageUrl();
                 DB::commit();
             }catch(\Exception $e){
                 DB::rollback();

@@ -345,7 +345,8 @@
                     error_remove();
                     $('button[type=submit]').removeAttr('disabled').removeClass('disable-btn');
                     if (data.status == 1) {
-                        // formReset();
+                        console.log(data.url);
+                        location.href = data.url;
                         
                     } else if (data.status == 0) {
                         error_display(data.message);
