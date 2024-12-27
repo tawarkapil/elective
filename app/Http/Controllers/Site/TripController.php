@@ -29,13 +29,12 @@ class TripController extends Controller
     function ajaxLoad(Request $request){
         $input = $request->all();
 
-        $builder = Trip::select('cust_trips.*', 'mst_programs.title as program_title', 'mst_destinations.title as destination_title');
-         $builder->join('trip_customers','cust_trips.id','=','trip_customers.trip_id');
-         $builder->join('customers','customers.customer_id','=','trip_customers.customer_id');
-         $builder->join('mst_destinations','mst_destinations.id','=','cust_trips.destination_id');
-         $builder->join('mst_programs','mst_programs.id','=','cust_trips.program_id');
-
-         $builder->where('trip_customers.customer_id', Auth::guard('customer')->user()->customer_id);
+        $builder = CustomerTrip::select('cust_trips.*', 'mst_programs.title as program_title', 'mst_destinations.title as destination_title');
+        $builder->join('trip_customers','cust_trips.id','=','trip_customers.trip_id');
+        $builder->join('customers','customers.customer_id','=','trip_customers.customer_id');
+        $builder->join('mst_destinations','mst_destinations.id','=','cust_trips.destination_id');
+        $builder->join('mst_programs','mst_programs.id','=','cust_trips.program_id');
+        $builder->where('trip_customers.customer_id', Auth::guard('customer')->user()->customer_id);
 
         $builder->where(function($query) use($input){
             if(isset($input['srch_start_date'])){
@@ -81,8 +80,9 @@ class TripController extends Controller
             })
 
             ->editColumn('mst_programs.title', function ($row) {
-                   return $row->program_title .' - '. $row->destination_title ; 
+                return $row->program_title .' - '. $row->destination_title ; 
             })
+          
             ->editColumn('status', function ($row) {
                    return ($row->status) ? 'Active' : 'Inactive'; 
             })
@@ -272,5 +272,88 @@ class TripController extends Controller
         $input['id'] = base64_decode($input['id']);
         $data = $obj->updateStatus($input);
         return json_encode($data);
+    }
+
+    function customerTrips(Request $request){
+        $input = $request->all();
+        return view('frontend.customer_trip.index', ['input' => $input]);
+    }
+
+    function ajaxLoadCustomerTrips(Request $request){
+        
+        $input = $request->all();
+
+        $builder = CustomerTrip::select('cust_trips.*','customers.first_name','customers.last_name', 'mst_programs.title as program_title', 'mst_destinations.title as destination_title');
+        $builder->join('trip_customers','cust_trips.id','=','trip_customers.trip_id');
+        $builder->join('customers','customers.customer_id','=','trip_customers.customer_id');
+        $builder->join('mst_destinations','mst_destinations.id','=','cust_trips.destination_id');
+        $builder->join('mst_programs','mst_programs.id','=','cust_trips.program_id');
+        $builder->where('cust_trips.customer_id', Auth::guard('customer')->user()->customer_id);
+
+        $builder->where(function($query) use($input){
+            if(isset($input['srch_start_date'])){
+                $query->whereDate('cust_trips.updated_at','>=', date('Y-m-d', strtotime($input['srch_start_date'])));
+            }
+            if(isset($input['srch_end_date'])){
+                $query->whereDate('cust_trips.updated_at','<=', date('Y-m-d', strtotime($input['srch_end_date'])));
+            } 
+        });
+          
+        return  Datatables::of($builder)->filter(function ($query ) use($input){
+                $query->where(function($query) use($input){
+                    if (isset($input['search']['value']) && strlen($input['search']['value'])>0) {
+                        $query->where(function($query) use($input){
+                            $srch = $input['search']['value'];
+                            $name_arr = explode(" ", $srch);
+                            if (isset($name_arr[0])) {
+                                $query->where("customers.first_name", "LIKE", "%" . $name_arr[0] . "%");
+                            }
+                            if (isset($name_arr[1])) {
+                                $query->where("customers.last_name", "LIKE", "%" . $name_arr[1] . "%");
+                            }
+
+                            $arr = [1 => 'Active', 0 => 'Inactive'];
+                            $status_arr =CommonHelper::FILTER_ARRAY_VALUES_REGEXP("/".$input['search']['value']."/i",  $arr);
+                            $status_arr = array_keys($status_arr);
+                            if(isset($status_arr[0])){
+                                $query->orWhereIn('cust_trips.status', $status_arr);
+                            }
+                        })
+                        ->orWhere('cust_trips.title', 'LIKE', '%'.$input['search']['value'].'%')
+                        ->orWhere('mst_programs.title', 'LIKE', '%' . $input['search']['value'] . '%')
+                        ->orWhere("mst_destinations.title", "LIKE", "%" . $input["search"]["value"] . "%");
+                    }
+                });
+            })
+            ->editColumn('cover_image', function($row){
+                return '<div class="text-center"><img src="'.\ViewsHelper::getTripCoverImage($row).'" style="height: 60px;width: 60px;object-fit: cover;"></div>';
+            })
+
+            ->editColumn('customers.first_name', function ($row) {
+                return $row->first_name.' '.$row->last_name; 
+            })
+            ->editColumn('mst_destinations.title', function ($row) {
+                return  $row->destination_title ; 
+            })
+            ->editColumn('mst_programs.title', function ($row) {
+                return $row->program_title ; 
+            })
+            ->editColumn('status', function ($row) {
+                return ($row->status) ? 'Active' : 'Inactive'; 
+            })
+            ->editColumn('created_at', function ($row) {  
+                return ViewsHelper::displayDate($row->created_at);  
+            }) 
+            ->editColumn('action', function ($row) {
+                $action = '<div class="<div class="text-nowrap text-center table-action" style="font-size:18px;">';
+                $action .= '<a title="View" class="action-icon text-muted" href="'.url('my-trips/view/'.base64_encode($row->id)).'" > <i class="fa fa-eye" aria-hidden="true"></i> </a>';
+
+                $action .= '<a title="Edit" class="action-icon text-muted" href="'.url('my-trips/addnew/'.base64_encode($row->id)).'" > <i class="fa fa-edit" aria-hidden="true"></i> </a>';
+                $action .= '</div>';
+                return $action;
+            })
+
+        ->rawColumns(['cover_image', 'action'])->addIndexColumn()
+        ->make(true);
     }
 }

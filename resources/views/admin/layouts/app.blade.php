@@ -69,9 +69,7 @@
 
     <script src="{{ url('public/panel/assets/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ url('public/panel/assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script>
-      $.widget.bridge('uibutton', $.ui.button)
-    </script>
+    <script> $.widget.bridge('uibutton', $.ui.button) </script>
     <script src="{{ url('public/panel/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('public/panel/assets/plugins/sparklines/sparkline.js') }}"></script>
     <script src="{{ url('public/panel/assets/plugins/moment/moment.min.js') }}"></script>

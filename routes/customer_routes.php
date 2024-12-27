@@ -82,11 +82,8 @@ Route::group(['namespace' => 'Site', 'middleware' => ['customerAuth']], function
    $router->get('/application/deposit-payment', 'ApplicationController@depositPayment');
    $router->post('/application/stripepayment', 'ApplicationController@stripepayment');
    $router->get('/payment-success/{payment_token}', 'ApplicationController@paymentSuccess');
-
    $router->get('/application-documents', 'ApplicationController@applicationDocuments');
-
    $router->post('studentDocumentsUpload', 'ApplicationController@studentDocumentsUpload');
-
    $router->post("profile/uploadChunkFile", "ProfileController@uploadChunkFile");
    $router->post("profile/deleteUploadFiles", "ProfileController@deleteUploadFiles");
    $router->post('profile/removeAttachmentFile', 'ProfileController@removeAttachmentFile');
@@ -123,6 +120,8 @@ Route::group(['namespace' => 'Site', 'middleware' => ['customerAuth']], function
       $router->post("loadEvents", "TripController@loadEvents");
       $router->post("loadPaymentSummary", "TripController@loadPaymentSummary");
       $router->post('update_status', 'TripController@update_status');
+      $router->get('my-group/', 'TripController@customerTrips');
+      $router->post('ajaxLoadMyGroup/', 'TripController@ajaxLoadCustomerTrips');
    });
 
    Route::group(['prefix' => 'notifications'], function () use ($router) {

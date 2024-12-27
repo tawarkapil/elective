@@ -111,6 +111,7 @@ class CustomerTrip extends Base{
         if ($v->passes()) {
             DB::beginTransaction();
             try{
+                $application = Application::where('id',$input['application_id'])->first();
                 if (empty($data)) {
                     $obj = new CustomerTrip();
                 }
@@ -118,6 +119,8 @@ class CustomerTrip extends Base{
                 $obj->customer_id = Auth::guard('customer')->user()->customer_id;
                 $obj->description = $input['description'];
                 $obj->application_id = $input['application_id'];
+                $obj->program_id = $application->program;
+                $obj->destination_id = $application->destination;
                 
                 if (!empty($input['image'])) {
                     $uploaded = $this->uploadImage($input['image']);

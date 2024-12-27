@@ -152,7 +152,7 @@
         
         @else 
         <!-- create Group Html -->
-        <section>
+        <section id="createBtnSection">
             <div class="container mt-30 mb-30 pt-30 pb-30">
                 <div class="filter pt-30 pb-20 mb-30">
                     <div class="row d-flex align-items-center justify-Content-center flex-wrap">
@@ -163,7 +163,7 @@
                         </div>
                         <div class="col-sm-2 col-xs-12">
                             <div class="form-group"> 
-                                <button type="submit" class="btn btn-colored btn-theme-colored btn-flat pull-right login_btn">
+                                <button id="groupBtnClick" type="submit" class="btn btn-colored btn-theme-colored btn-flat pull-right login_btn">
                                     Create Group
                                 </button> 
                             </div>
@@ -176,9 +176,9 @@
                 </div>
             </div>
         </section> 
-        <section id="inquiry-tab" class="divider grey_bg"
+        <section style="display:none; " id="group-tab" class="divider grey_bg"
             data-bg-img="{{ url('public/frontend/assets/images/enquire-form-grey.jpg') }}">
-            <div class="container pt-0 pb-0">
+            <div class="container mt-30 mb-30 pt-30 pb-30">
                 <div class="row">
                     <div class="col-md-7">
                         <div class="blue_bg_color p-40">
@@ -213,7 +213,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="name">Title <span class="required text-danger">*</span></label>
+                                            <label for="title">Title <span class="required text-danger">*</span></label>
                                             <input name="title" id="title" class="form-control" type="text" placeholder="Enter Name">
                                         </div>
                                     </div>
@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 form-group">
-                                        <label for="message">Description <span class="required text-danger">*</span></label>
+                                        <label for="description">Description <span class="required text-danger">*</span></label>
                                         <textarea name="description" id="description" class="form-control" rows="3" placeholder="Enter Message"></textarea>
                                     </div>
                                     <div class="col-sm-12">
@@ -345,9 +345,7 @@
                     error_remove();
                     $('button[type=submit]').removeAttr('disabled').removeClass('disable-btn');
                     if (data.status == 1) {
-                        console.log(data.url);
                         location.href = data.url;
-                        
                     } else if (data.status == 0) {
                         error_display(data.message);
                     } else if (data.status == 2) {
@@ -355,6 +353,10 @@
                     }
                 }
             });
+        });
+        $("#groupBtnClick").click(function () {
+            $("#group-tab").show();
+            $("#createBtnSection").hide();
         });
     </script>
 
