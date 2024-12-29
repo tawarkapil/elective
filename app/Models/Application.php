@@ -22,6 +22,11 @@ class Application extends Base {
         return $this->hasOne('App\Models\Destination', 'id', 'destination');
     }
 
+    function getcalls(){
+        return $this->hasMany('App\Models\ProgramCall', 'id', 'application');
+    }
+
+
     function personalInfoFrm($input){
 
         $rules = array(
