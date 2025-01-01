@@ -288,7 +288,7 @@ class TripController extends Controller
         $builder->join('customers','customers.customer_id','=','trip_customers.customer_id');
         $builder->join('mst_destinations','mst_destinations.id','=','cust_trips.destination_id');
         $builder->join('mst_programs','mst_programs.id','=','cust_trips.program_id');
-        $builder->where('cust_trips.customer_id', Auth::guard('customer')->user()->customer_id);
+        $builder->where('trip_customers.customer_id', Auth::guard('customer')->user()->customer_id);
 
         $builder->where(function($query) use($input){
             if(isset($input['srch_start_date'])){

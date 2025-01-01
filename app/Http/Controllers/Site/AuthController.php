@@ -163,7 +163,7 @@ class AuthController extends Controller
         $rules = array(
             'first_name' =>  'required|not_allow_symbol|max:50',
             'last_name' =>  'required|not_allow_symbol|max:50',
-            'email' =>  'required|email:rfc,dns|unique:customers,email|min:8|max:255',
+            // 'email' =>  'required|email:rfc,dns|unique:customers,email|min:8|max:255',
             'password' => 'required|strong_password|min:6|max:50',
             'confirm_password' => 'required|strong_password|same:password'
         );
@@ -188,7 +188,7 @@ class AuthController extends Controller
                 ]);
 
                 DB::commit();
-                $this->sendWelcomeMail($customer);
+                // $this->sendWelcomeMail($customer);
                 $json['status'] = 1;
                 $json['message'] = 'Registered Successfully';
                 $json['redirect_url'] = url('dashboard');                

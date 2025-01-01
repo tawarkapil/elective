@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Site'], function () use ($router) {
    $router->get("/trips", "HomeController@trips");
    $router->get("/trips/info/{title}/{id}", "HomeController@tripInfo");
    $router->post("/trips/add-trip", "HomeController@addnewCustomerTrip");
+   $router->post("/trips/add-customer-trip", "HomeController@addCustomerTrip");
 
    $router->get("/tours", "HomeController@tours");
    $router->get("/tours/info/{title}/{id}", "HomeController@tourInfo");

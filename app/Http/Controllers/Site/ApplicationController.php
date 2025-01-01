@@ -104,8 +104,6 @@ class ApplicationController extends BaseController{
 
 
     public function depositPayment(Request $request){
-
-        $input['customer_id'] = 1;
         $user = Auth::guard('customer')->user();
         $data = Application::where('customer_id', $user->customer_id)->first();
         if(!$data || ($data && $data->accept_terms_condition != 'Yes')){

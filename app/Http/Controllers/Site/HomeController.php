@@ -8,6 +8,7 @@ use App\Models\Blogs;
 use App\Models\Customer;
 use App\Models\Program;
 use App\Models\CustomerTrip;
+use App\Models\TripCustomers;
 use App\Models\Pricing;
 use App\Models\Destination;
 use App\Models\Testimonial;
@@ -20,13 +21,14 @@ use App\Models\Comment;
 use App\Models\Application;
 use Auth;
 use Config;
+use DB;
 
 class HomeController extends Controller
 {
     
     public function index(Request $request){
-    	 $input = $request->all();
-         $testimonials = Testimonial::where('status', 1)->get();
+    	$input = $request->all();
+        $testimonials = Testimonial::where('status', 1)->get();
          $destination = Destination::where('status', 1)->take(10)->get();
          $programs = Program::where('status', 1)->take(10)->get();
          $blogsdata = Blogs::where('status', 1)->take(10)->get();
@@ -120,13 +122,15 @@ class HomeController extends Controller
     function tripInfo(Request $request, $title, $id){
         $id = base64_decode($id);
         $data = CustomerTrip::where('id', $id)->where('status', 1)->first();
+        $customer_id = Auth::guard('customer')->user()->customer_id;
         // if (!$data) {
         //     return abort(404);
         // }
+        $tripCustomersData = TripCustomers::where('trip_id', $data->id)->where('customer_id', $customer_id)->first();
         $application = Application::where('customer_id', \Auth::guard('customer')->user()->customer_id)->with(['getprogram','getdestination'])->first();
         $programs = Program::where('status', 1)->orderBy('title', 'ASC')->get();
         $similar_trips = CustomerTrip::where('status', 1)->orderBy('created_at', 'DESC')->take(20)->get();
-        return view('frontend.pages.trips-details', ['application'=>$application,'request' => $request, 'data' => $data, 'programs' => $programs, 'similar_trips' => $similar_trips]);
+        return view('frontend.pages.trips-details', ['tripCustomersData'=>$tripCustomersData,'application'=>$application,'request' => $request, 'data' => $data, 'programs' => $programs, 'similar_trips' => $similar_trips]);
     }
 
     public function addnewCustomerTrip(Request $request)
@@ -137,6 +141,44 @@ class HomeController extends Controller
         // $input['id'] = base64_decode($input['id']);
         $data = $obj->addNew($input);
         return json_encode($data);
+    }
+
+    function addCustomerTrip(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $customer_id = Auth::guard('customer')->user()->customer_id;
+            $existingEntry = TripCustomers::where('trip_id', $request->id)
+                                   ->where('customer_id', $customer_id)
+                                   ->first();
+
+            if ($existingEntry) {
+                return response()->json([
+                    'message' => 'You Already Added This Group.',
+                    'status'  => 1
+                ], 201);
+            }
+            TripCustomers::create([
+                'trip_id' => $request->id,
+                'customer_id' => $customer_id,
+                'type' => 2,
+                'status' => 1,
+            ]);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'status'  => 1,
+                'message' => 'Customer added to the group successfully!',
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'status'  => 0,
+                'message' => 'Failed to add customer to the group. Please try again.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     function destinations(Request $request) {

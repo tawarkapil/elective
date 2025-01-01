@@ -40,7 +40,11 @@
                         <div class="col-md-8">
                             <div class="">
                                 <h4 class="line-bottom text-uppercase mt-0 pull-start">Trip</h4>
-                                <a href="#" class="btn btn-success pull-right">Join This Group</a>
+                                @if(!$tripCustomersData)
+                                    <button id="joinGroup" data-id={{ $data->id }} class="btn btn-success pull-right">Join This Group</button>
+                                @else
+                                    <a class="btn btn-success pull-right" href="{{ url('my-trips/my-group') }}"> View Group</a>
+                                @endif
                             </div>
                             <h5 class="name mt-30 mb-0">{{ $data->title }}</h5>
                             <h6 class="mt-5">Organiser :
@@ -346,6 +350,31 @@
                     $('button[type=submit]').removeAttr('disabled').removeClass('disable-btn');
                     if (data.status == 1) {
                         location.href = data.url;
+                    } else if (data.status == 0) {
+                        error_display(data.message);
+                    } else if (data.status == 2) {
+                        display_toster(data.message, 2);
+                    }
+                }
+            });
+        });
+        $(document).on('click', '#joinGroup', function (e) {
+            e.preventDefault();
+            let  groupId = $(this).data('id');
+            let currentButton = $(this);
+            currentButton.attr('disabled', 'disabled').addClass('disable-btn');
+            $.ajax({
+                type: "POST",
+                url: HTTP_PATH + 'trips/add-customer-trip',
+                data: {
+                    id: groupId, 
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (data) {
+                    currentButton.removeAttr('disabled').removeClass('disable-btn');
+                    if (data.status == 1) {
+                        console.log(data);
+                        display_toster(data.message, 1);
                     } else if (data.status == 0) {
                         error_display(data.message);
                     } else if (data.status == 2) {
